@@ -1,0 +1,26 @@
+name: Pipeline do NVercel
+
+on:
+  push:
+    branches: [ dev ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy do Site no Vercel
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar dependências
+        uses: npm install
+
+      - name: Rodar build
+        run: npm run build
+
+      - name: Deploy para Vercel
+        run: npx vercel --prod --token=$VERCEL_TOKEN
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
